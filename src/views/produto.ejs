@@ -91,7 +91,7 @@
       <article class="card-produto">
         <div class="card-produto-imagem">
           <img
-            src="/images/produtos/<%= rel.imagem %>"
+            src="<%= rel.imagem && rel.imagem.startsWith('http') ? rel.imagem : '/images/' + rel.imagem %>"
             alt="<%= rel.nome %>"
             onerror="this.src='/images/placeholder.svg'"
             loading="lazy"

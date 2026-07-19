@@ -126,7 +126,7 @@
 
             <% if (produto && produto.imagem && !produto.imagem.startsWith('default-')) { %>
             <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
-              <img src="/images/produtos/<%= produto.imagem %>" alt="Imagem atual"
+              <img src="<%= produto.imagem && produto.imagem.startsWith('http') ? produto.imagem : '/images/' + produto.imagem %>"
                    style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #E8E0DC;" id="previewImagem">
               <span style="font-size: 0.8125rem; color: #8A7E7B;">Imagem atual (envie nova para substituir)</span>
             </div>

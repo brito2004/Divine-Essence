@@ -84,7 +84,7 @@
             <tr>
               <td>
                 <div style="display: flex; align-items: center; gap: 0.875rem;">
-                  <img src="/images/produtos/<%= p.imagem %>" alt="<%= p.nome %>"
+                  <img src="<%= p.imagem && p.imagem.startsWith('http') ? p.imagem : '/images/' + p.imagem %>"
                        class="tabela-imagem" onerror="this.src='/images/placeholder.svg'">
                   <span class="tabela-nome"><%= p.nome %></span>
                 </div>
