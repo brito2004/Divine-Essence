@@ -1,21 +1,28 @@
-<%- include('partials/header') %>
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof titulo !== 'undefined' ? titulo : 'Erro' %> — Divine Essence</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
 <div style="min-height: 60vh; display: flex; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center;">
   <div>
     <div style="font-family: 'Cormorant Garamond', serif; font-size: 8rem; color: #F4C2D7; font-weight: 300; line-height: 1; margin-bottom: 1rem;">
-      <%= codigo || '?' %>
+      <%= typeof codigo !== 'undefined' ? codigo : '?' %>
     </div>
     <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: #2A1F1D; margin-bottom: 1rem;">
-      <%= titulo || 'Algo deu errado' %>
+      <%= typeof titulo !== 'undefined' ? titulo : 'Algo deu errado' %>
     </h1>
     <p style="font-size: 0.9375rem; color: #8A7E7B; max-width: 400px; margin: 0 auto 2.5rem; line-height: 1.8;">
-      <%= mensagem || 'Ocorreu um erro inesperado.' %>
+      <%= typeof mensagem !== 'undefined' ? mensagem : 'Ocorreu um erro inesperado.' %>
     </p>
     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <a href="/" class="btn btn-primario">Voltar ao Início</a>
-      <a href="/catalogo" class="btn btn-outline">Ver Catálogo</a>
+      <a href="/" style="display:inline-flex;align-items:center;padding:0.875rem 2rem;background:#2A1F1D;color:white;font-family:Jost,sans-serif;font-size:0.8125rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;">Voltar ao Início</a>
+      <a href="/catalogo" style="display:inline-flex;align-items:center;padding:0.875rem 2rem;border:1px solid #2A1F1D;color:#2A1F1D;font-family:Jost,sans-serif;font-size:0.8125rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;">Ver Catálogo</a>
     </div>
   </div>
 </div>
-
-<%- include('partials/footer') %>
+</body>
+</html>

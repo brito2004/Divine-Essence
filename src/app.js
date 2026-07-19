@@ -14,8 +14,16 @@ const fileUpload = require('express-fileupload');
 const methodOverride = require('method-override');
 
 // Inicializar banco de dados
-const { getDb } = require('./config/database');
-getDb(); // Conectar ao iniciar
+// Inicializar banco e criar tabelas
+async function inicializar() {
+  const { execSync } = require('child_process');
+  try {
+    execSync('node database/setup.js', { stdio: 'inherit' });
+  } catch(e) {
+    console.error('Erro no setup:', e.message);
+  }
+}
+inicializar();
 
 // Rotas
 const rotasPublicas = require('./routes/publico');
@@ -109,11 +117,7 @@ app.use((req, res) => {
 // ============================================
 app.use((err, req, res, next) => {
   console.error('Erro interno:', err.stack);
-  res.status(500).render('erro', {
-    titulo: 'Erro interno',
-    mensagem: 'Ocorreu um erro inesperado. Tente novamente.',
-    codigo: 500
-  });
+  res.status(500).send('<h1>Erro interno</h1><p>Ocorreu um erro inesperado.</p><a href="/">Voltar</a>');
 });
 
 // ============================================
