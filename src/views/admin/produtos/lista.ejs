@@ -78,7 +78,7 @@
             <% produtos.forEach(p => { %>
             <tr>
               <td>
-                <img src="<%= produto.imagem && produto.imagem.startsWith('http') ? produto.imagem : '/images/' + produto.imagem %>"
+                <img src="<%= p.imagem && p.imagem.startsWith('http') ? p.imagem : '/images/' + p.imagem %>"
                      class="tabela-imagem" onerror="this.src='/images/placeholder.svg'">
               </td>
               <td class="tabela-nome"><%= p.nome %></td>
