@@ -17,7 +17,7 @@
   <div>
     <div class="produto-imagem-wrapper">
       <img
-        src="/images/produtos/<%= produto.imagem %>"
+        src="<%= produto.imagem && produto.imagem.startsWith('http') ? produto.imagem : '/images/' + produto.imagem %>"
         alt="<%= produto.nome %>"
         onerror="this.src='/images/placeholder.svg'"
       >
