@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <%- include('../partials/admin-sidebar', { paginaAtual: 'dashboard' }) %>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-topbar-titulo">Dashboard</h1>
+      <div class="admin-topbar-acoes">
+        <a href="/catalogo" target="_blank" class="btn-admin btn-admin-outline btn-admin-sm">
+          Ver Site ↗
+        </a>
+        <a href="/admin/produtos/novo" class="btn-admin btn-admin-dourado btn-admin-sm">
+          + Novo Produto
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-conteudo">
+
+      <% if (sucesso) { %>
+      <div class="alerta alerta-sucesso"><%= sucesso %></div>
+      <% } %>
+      <% if (erro) { %>
+      <div class="alerta alerta-erro"><%= erro %></div>
+      <% } %>
+
+      <!-- Métricas -->
+      <div class="admin-metricas">
+        <div class="metrica-card">
+          <div class="metrica-label">Total de Produtos</div>
+          <div class="metrica-valor"><%= totalProdutos %></div>
+          <div class="metrica-sub">no catálogo</div>
+          <div class="metrica-icone">📦</div>
+        </div>
+        <div class="metrica-card">
+          <div class="metrica-label">Em Destaque</div>
+          <div class="metrica-valor"><%= produtosDestaque %></div>
+          <div class="metrica-sub">produtos destacados</div>
+          <div class="metrica-icone">⭐</div>
+        </div>
+        <div class="metrica-card">
+          <div class="metrica-label">Categorias</div>
+          <div class="metrica-valor"><%= totalCategorias %></div>
+          <div class="metrica-sub">categorias ativas</div>
+          <div class="metrica-icone">🗂️</div>
+        </div>
+      </div>
+
+      <!-- Últimos Produtos -->
+      <div style="background: white; border: 1px solid #E8E0DC; padding: 1.75rem; margin-top: 1.5rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+          <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 1.375rem; font-weight: 400;">Últimos Produtos Adicionados</h2>
+          <a href="/admin/produtos" class="btn-admin btn-admin-outline btn-admin-sm">Ver Todos</a>
+        </div>
+
+        <% if (ultimosProdutos.length === 0) { %>
+        <p style="color: #8A7E7B; font-size: 0.875rem; text-align: center; padding: 2rem;">
+          Nenhum produto cadastrado ainda.
+          <a href="/admin/produtos/novo" style="color: #C9A96E;">Adicionar primeiro produto →</a>
+        </p>
+        <% } else { %>
+        <table class="admin-tabela">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Destaque</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% ultimosProdutos.forEach(p => { %>
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 0.875rem;">
+                  <img src="/images/produtos/<%= p.imagem %>" alt="<%= p.nome %>"
+                       class="tabela-imagem" onerror="this.src='/images/placeholder.svg'">
+                  <span class="tabela-nome"><%= p.nome %></span>
+                </div>
+              </td>
+              <td><span class="badge-categoria"><%= p.categoria %></span></td>
+              <td class="tabela-preco">R$ <%= Number(p.preco).toFixed(2).replace('.', ',') %></td>
+              <td><% if (p.destaque) { %><span class="badge-destaque">Destaque</span><% } else { %><span style="color:#ccc">—</span><% } %></td>
+              <td>
+                <div class="tabela-acoes">
+                  <a href="/admin/produtos/<%= p.id %>/editar" class="btn-admin btn-admin-outline btn-admin-sm">Editar</a>
+                </div>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

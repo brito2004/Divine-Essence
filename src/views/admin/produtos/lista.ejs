@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <%- include('../../partials/admin-sidebar', { paginaAtual: 'produtos', adminNome }) %>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-topbar-titulo">Produtos</h1>
+      <div class="admin-topbar-acoes">
+        <a href="/admin/produtos/novo" class="btn-admin btn-admin-dourado btn-admin-sm">
+          + Novo Produto
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-conteudo">
+
+      <% if (sucesso) { %>
+      <div class="alerta alerta-sucesso"><%= sucesso %></div>
+      <% } %>
+      <% if (erro) { %>
+      <div class="alerta alerta-erro"><%= erro %></div>
+      <% } %>
+
+      <!-- Filtros -->
+      <form method="GET" action="/admin/produtos" class="admin-filtros">
+        <input
+          type="text"
+          name="busca"
+          class="admin-filtros-busca"
+          placeholder="Buscar por nome..."
+          value="<%= filtros.busca %>"
+        >
+        <select name="categoria" class="form-select" style="width: auto; padding: 0.6rem 2rem 0.6rem 1rem;" onchange="this.form.submit()">
+          <option value="">Todas as categorias</option>
+          <% categorias.forEach(cat => { %>
+          <option value="<%= cat.nome %>" <%= filtros.categoria === cat.nome ? 'selected' : '' %>><%= cat.nome %></option>
+          <% }) %>
+        </select>
+        <button type="submit" class="btn-admin btn-admin-outline btn-admin-sm">Filtrar</button>
+        <% if (filtros.busca || filtros.categoria) { %>
+        <a href="/admin/produtos" class="btn-admin btn-admin-outline btn-admin-sm">Limpar</a>
+        <% } %>
+        <span style="margin-left: auto; font-size: 0.8125rem; color: #8A7E7B;"><%= produtos.length %> produto(s)</span>
+      </form>
+
+      <!-- Tabela -->
+      <div class="admin-tabela-wrapper">
+        <% if (produtos.length === 0) { %>
+        <div style="text-align: center; padding: 4rem 2rem; color: #8A7E7B;">
+          <div style="font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.3;">📦</div>
+          <p style="font-size: 0.9375rem; margin-bottom: 1.5rem;">Nenhum produto encontrado.</p>
+          <a href="/admin/produtos/novo" class="btn-admin btn-admin-dourado">Adicionar Produto</a>
+        </div>
+        <% } else { %>
+        <table class="admin-tabela">
+          <thead>
+            <tr>
+              <th>Imagem</th>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Destaque</th>
+              <th>Adicionado</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% produtos.forEach(p => { %>
+            <tr>
+              <td>
+                <img src="/images/produtos/<%= p.imagem %>" alt="<%= p.nome %>"
+                     class="tabela-imagem" onerror="this.src='/images/placeholder.svg'">
+              </td>
+              <td class="tabela-nome"><%= p.nome %></td>
+              <td><span class="badge-categoria"><%= p.categoria %></span></td>
+              <td class="tabela-preco">R$ <%= Number(p.preco).toFixed(2).replace('.', ',') %></td>
+              <td>
+                <% if (p.destaque) { %>
+                <span class="badge-destaque">✦ Destaque</span>
+                <% } else { %>
+                <span style="color: #ccc; font-size: 0.875rem;">—</span>
+                <% } %>
+              </td>
+              <td style="font-size: 0.8125rem; color: #8A7E7B; white-space: nowrap;">
+                <%= new Date(p.created_at).toLocaleDateString('pt-BR') %>
+              </td>
+              <td>
+                <div class="tabela-acoes">
+                  <a href="/produto/<%= p.id %>" target="_blank" class="btn-admin btn-admin-outline btn-admin-sm" title="Ver no site">↗</a>
+                  <a href="/admin/produtos/<%= p.id %>/editar" class="btn-admin btn-admin-outline btn-admin-sm">Editar</a>
+                  <form action="/admin/produtos/<%= p.id %>/excluir" method="POST" style="display: inline;">
+                    <button type="button" class="btn-admin btn-admin-perigo btn-admin-sm"
+                            data-confirmar="Excluir o produto &quot;<%= p.nome %>&quot;? Esta ação não pode ser desfeita.">
+                      Excluir
+                    </button>
+                    <button type="submit" style="display:none;" id="submitExcluir<%= p.id %>"></button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <% } %>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="/js/admin.js"></script>
+<script>
+// Override para submit do form de exclusão
+document.querySelectorAll('[data-confirmar]').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    if (confirm(this.dataset.confirmar)) {
+      this.closest('form').submit();
+    }
+  });
+});
+</script>
+</body>
+</html>

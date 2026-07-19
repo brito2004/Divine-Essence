@@ -1,0 +1,142 @@
+<%- include('partials/header') %>
+
+<!-- Hero Banner -->
+<section class="hero">
+  <div class="hero-conteudo">
+    <div class="hero-label">Nova Coleção 2024</div>
+    <h1 class="hero-titulo">
+      Fragrâncias que<br>
+      <em>contam histórias</em>
+    </h1>
+    <p class="hero-descricao">
+      Descubra nossa curadoria de perfumes, cremes e hidratantes premium.
+      Cada produto é escolhido a dedo para despertar sensações únicas.
+    </p>
+    <div class="hero-acoes">
+      <a href="/catalogo" class="btn btn-primario btn-lg">
+        Ver Catálogo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+      <a href="/catalogo?destaque=1" class="btn btn-outline">Em Destaque</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-numero"><%= totalProdutos %>+</div>
+        <div class="hero-stat-label">Produtos</div>
+      </div>
+      <div>
+        <div class="hero-stat-numero"><%= categorias.length %></div>
+        <div class="hero-stat-label">Categorias</div>
+      </div>
+      <div>
+        <div class="hero-stat-numero">100%</div>
+        <div class="hero-stat-label">Premium</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-visual-deco"></div>
+    <div class="hero-visual-deco-2"></div>
+    <div class="hero-visual-text">✦</div>
+  </div>
+</section>
+
+<!-- Categorias -->
+<section class="secao-fundo">
+  <div class="secao-fundo-inner">
+    <div class="secao-header">
+      <div class="subtitulo-secao">Explore</div>
+      <h2 class="titulo-secao">Nossas Categorias</h2>
+      <div class="secao-divider"></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+      <% categorias.slice(0, 6).forEach(categoria => { %>
+      <a href="/catalogo?categoria=<%= encodeURIComponent(categoria.nome) %>"
+         style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 2rem 1rem; background: white; border: 1px solid #F4C2D7; text-decoration: none; transition: all 0.3s; text-align: center;"
+         onmouseover="this.style.borderColor='#C9A96E'; this.style.transform='translateY(-3px)'"
+         onmouseout="this.style.borderColor='#F4C2D7'; this.style.transform='translateY(0)'">
+        <span style="font-size: 1.75rem; opacity: 0.6;">
+          <% if (categoria.nome === 'Perfumes') { %>🌸
+          <% } else if (categoria.nome === 'Body Splash') { %>💧
+          <% } else if (categoria.nome === 'Cremes') { %>🫧
+          <% } else if (categoria.nome === 'Hidratantes') { %>✨
+          <% } else if (categoria.nome === 'Kits') { %>🎁
+          <% } else { %>🌿<% } %>
+        </span>
+        <span style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: #2A1F1D; font-weight: 400;"><%= categoria.nome %></span>
+      </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- Produtos em Destaque -->
+<% if (produtosDestaque.length > 0) { %>
+<section class="secao">
+  <div class="secao-header">
+    <div class="subtitulo-secao">Selecionados para você</div>
+    <h2 class="titulo-secao">Produtos em Destaque</h2>
+    <div class="secao-divider"></div>
+  </div>
+
+  <div class="grid-produtos">
+    <% produtosDestaque.forEach((produto, i) => { %>
+    <article class="card-produto animado delay-<%= (i % 4) + 1 %>">
+      <div class="card-produto-imagem">
+        <img
+          src="/images/produtos/<%= produto.imagem %>"
+          alt="<%= produto.nome %>"
+          onerror="this.src='/images/placeholder.svg'"
+          loading="lazy"
+        >
+        <div class="card-produto-badge">Destaque</div>
+        <div class="card-produto-overlay">
+          <a href="/produto/<%= produto.id %>" class="btn btn-primario btn-sm">Ver Produto</a>
+        </div>
+      </div>
+      <div class="card-produto-body">
+        <div class="card-produto-categoria"><%= produto.categoria %></div>
+        <h3 class="card-produto-nome"><%= produto.nome %></h3>
+        <% if (produto.descricao) { %>
+        <p class="card-produto-descricao"><%= produto.descricao.substring(0, 90) %>...</p>
+        <% } %>
+        <div class="card-produto-footer">
+          <div class="card-produto-preco">
+            <small>R$</small> <%= Number(produto.preco).toFixed(2).replace('.', ',') %>
+          </div>
+          <a href="/produto/<%= produto.id %>" class="btn btn-outline btn-sm">Ver mais</a>
+        </div>
+      </div>
+    </article>
+    <% }) %>
+  </div>
+
+  <div class="text-center" style="margin-top: 3rem;">
+    <a href="/catalogo" class="btn btn-outline btn-lg">Ver Catálogo Completo</a>
+  </div>
+</section>
+<% } %>
+
+<!-- Banner Sobre a Marca -->
+<section style="background: linear-gradient(135deg, #2A1F1D 0%, #3D2E2A 100%); padding: 5rem 2rem; text-align: center;">
+  <div style="max-width: 640px; margin: 0 auto;">
+    <div style="font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: #C9A96E; margin-bottom: 1.5rem;">Nossa Essência</div>
+    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; color: white; margin-bottom: 1.5rem; line-height: 1.2;">
+      Cada fragância é uma obra de arte
+    </h2>
+    <p style="font-size: 0.9375rem; color: rgba(255,255,255,0.65); line-height: 1.9; margin-bottom: 2.5rem;">
+      Na Divine Essence, acreditamos que um perfume vai além de um simples aroma.
+      É uma expressão de personalidade, uma memória afetiva, um convite para a beleza.
+      Cada produto em nosso catálogo foi cuidadosamente selecionado para oferecer uma experiência sensorial única.
+    </p>
+    <a href="/catalogo" class="btn btn-dourado btn-lg">Descobrir Fragrâncias</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

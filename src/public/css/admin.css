@@ -1,0 +1,587 @@
+/* ============================================
+   DIVINE ESSENCE — Painel Administrativo
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap');
+
+:root {
+  --admin-bg: #F9F7F5;
+  --admin-sidebar: #2A1F1D;
+  --admin-sidebar-hover: #3D2E2A;
+  --admin-destaque: #C9A96E;
+  --admin-rosa: #F4C2D7;
+  --admin-branco: #FFFFFF;
+  --admin-texto: #2A1F1D;
+  --admin-texto-med: #5C4A47;
+  --admin-borda: #E8E0DC;
+  --fonte-display: 'Cormorant Garamond', serif;
+  --fonte-corpo: 'Jost', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--fonte-corpo);
+  font-weight: 300;
+  background: var(--admin-bg);
+  color: var(--admin-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ============================================
+   Layout Admin
+   ============================================ */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* ============================================
+   Sidebar
+   ============================================ */
+.admin-sidebar {
+  background: var(--admin-sidebar);
+  color: rgba(255,255,255,0.75);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-sidebar-logo {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-sidebar-logo-nome {
+  font-family: var(--fonte-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--admin-branco);
+  letter-spacing: 0.06em;
+}
+
+.admin-sidebar-logo-sub {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--admin-destaque);
+  margin-top: 3px;
+}
+
+.admin-nav {
+  padding: 1.5rem 0;
+  flex: 1;
+}
+
+.admin-nav-section {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  padding: 0.5rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.65);
+  transition: all 0.2s;
+  border-left: 2px solid transparent;
+}
+
+.admin-nav-link:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--admin-branco);
+}
+
+.admin-nav-link.ativo {
+  background: rgba(201, 169, 110, 0.12);
+  color: var(--admin-destaque);
+  border-left-color: var(--admin-destaque);
+}
+
+.admin-nav-link-icon {
+  width: 18px;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.admin-sidebar-user {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.admin-user-avatar {
+  width: 32px;
+  height: 32px;
+  background: var(--admin-destaque);
+  color: var(--admin-branco);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Conteúdo Principal
+   ============================================ */
+.admin-main {
+  overflow-x: hidden;
+}
+
+.admin-topbar {
+  background: var(--admin-branco);
+  border-bottom: 1px solid var(--admin-borda);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.admin-topbar-titulo {
+  font-family: var(--fonte-display);
+  font-size: 1.375rem;
+  font-weight: 400;
+}
+
+.admin-topbar-acoes {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.admin-conteudo {
+  padding: 2rem;
+}
+
+/* ============================================
+   Cards de Métricas
+   ============================================ */
+.admin-metricas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.metrica-card {
+  background: var(--admin-branco);
+  border: 1px solid var(--admin-borda);
+  padding: 1.75rem;
+  transition: box-shadow 0.2s;
+}
+
+.metrica-card:hover {
+  box-shadow: 0 4px 20px rgba(42,31,29,0.08);
+}
+
+.metrica-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #8A7E7B;
+  margin-bottom: 0.75rem;
+}
+
+.metrica-valor {
+  font-family: var(--fonte-display);
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: var(--admin-texto);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.metrica-sub {
+  font-size: 0.8125rem;
+  color: #8A7E7B;
+}
+
+.metrica-icone {
+  float: right;
+  font-size: 2rem;
+  opacity: 0.15;
+  margin-top: -3rem;
+}
+
+/* ============================================
+   Tabela Admin
+   ============================================ */
+.admin-tabela-wrapper {
+  background: var(--admin-branco);
+  border: 1px solid var(--admin-borda);
+  overflow-x: auto;
+}
+
+.admin-tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-tabela th {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8A7E7B;
+  background: var(--admin-bg);
+  border-bottom: 1px solid var(--admin-borda);
+  font-weight: 500;
+}
+
+.admin-tabela td {
+  padding: 1rem 1.25rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #F5F2F0;
+  vertical-align: middle;
+  color: var(--admin-texto-med);
+}
+
+.admin-tabela tr:last-child td { border-bottom: none; }
+
+.admin-tabela tr:hover td { background: var(--admin-bg); }
+
+.tabela-imagem {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border: 1px solid var(--admin-borda);
+}
+
+.tabela-nome { font-weight: 400; color: var(--admin-texto); }
+.tabela-preco { font-family: var(--fonte-display); font-size: 1.1rem; color: var(--admin-texto); }
+
+.badge-destaque {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  background: #FFF7EC;
+  color: var(--admin-destaque);
+  border: 1px solid var(--admin-destaque);
+}
+
+.badge-categoria {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.6875rem;
+  background: var(--admin-rosa);
+  color: #5C3A50;
+  border-radius: 2px;
+}
+
+.tabela-acoes {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ============================================
+   Formulários Admin
+   ============================================ */
+.admin-form {
+  background: var(--admin-branco);
+  border: 1px solid var(--admin-borda);
+  padding: 2.5rem;
+  max-width: 720px;
+}
+
+.form-grupo {
+  margin-bottom: 1.75rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--admin-texto-med);
+  margin-bottom: 0.625rem;
+  font-weight: 500;
+}
+
+.form-label span {
+  color: #ef4444;
+  margin-left: 3px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--admin-borda);
+  background: var(--admin-branco);
+  font-family: var(--fonte-corpo);
+  font-size: 0.9375rem;
+  color: var(--admin-texto);
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 2px;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--admin-destaque);
+}
+
+.form-textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+
+.form-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.form-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--admin-borda);
+  background: var(--admin-branco);
+  cursor: pointer;
+  accent-color: var(--admin-destaque);
+}
+
+.form-checkbox-label {
+  font-size: 0.875rem;
+  color: var(--admin-texto-med);
+}
+
+.form-upload-area {
+  border: 2px dashed var(--admin-borda);
+  padding: 2.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  background: var(--admin-bg);
+}
+
+.form-upload-area:hover { border-color: var(--admin-destaque); }
+
+.form-upload-preview {
+  margin-top: 1rem;
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+  border: 1px solid var(--admin-borda);
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-acoes {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--admin-borda);
+}
+
+/* ============================================
+   Botões Admin
+   ============================================ */
+.btn-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-family: var(--fonte-corpo);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  border-radius: 2px;
+}
+
+.btn-admin-primario {
+  background: var(--admin-texto);
+  color: var(--admin-branco);
+}
+.btn-admin-primario:hover { background: #3D2E2A; }
+
+.btn-admin-dourado {
+  background: var(--admin-destaque);
+  color: var(--admin-branco);
+}
+.btn-admin-dourado:hover { background: #b8924a; }
+
+.btn-admin-outline {
+  background: transparent;
+  color: var(--admin-texto);
+  border: 1px solid var(--admin-borda);
+}
+.btn-admin-outline:hover { background: var(--admin-bg); }
+
+.btn-admin-perigo {
+  background: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+.btn-admin-perigo:hover { background: #dc3545; color: var(--admin-branco); }
+
+.btn-admin-sm {
+  padding: 0.4rem 0.875rem;
+  font-size: 0.75rem;
+}
+
+/* ============================================
+   Filtros Admin
+   ============================================ */
+.admin-filtros {
+  background: var(--admin-branco);
+  border: 1px solid var(--admin-borda);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-filtros-busca {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--admin-borda);
+  font-family: var(--fonte-corpo);
+  font-size: 0.875rem;
+  color: var(--admin-texto);
+  outline: none;
+  border-radius: 2px;
+}
+
+.admin-filtros-busca:focus { border-color: var(--admin-destaque); }
+
+/* ============================================
+   Modal de Confirmação
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.ativo { display: flex; }
+
+.modal {
+  background: var(--admin-branco);
+  padding: 2rem;
+  max-width: 420px;
+  width: 90%;
+}
+
+.modal-titulo {
+  font-family: var(--fonte-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.modal-descricao {
+  font-size: 0.9375rem;
+  color: var(--admin-texto-med);
+  margin-bottom: 1.75rem;
+  line-height: 1.7;
+}
+
+.modal-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* ============================================
+   Login Admin
+   ============================================ */
+.admin-login {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2A1F1D 0%, #3D2E2A 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.admin-login-card {
+  background: var(--admin-branco);
+  padding: 3rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.admin-login-logo {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.admin-login-logo-nome {
+  font-family: var(--fonte-display);
+  font-size: 2.25rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--admin-texto);
+}
+
+.admin-login-logo-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--admin-destaque);
+  margin-top: 4px;
+}
+
+.admin-login-titulo {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8A7E7B;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ============================================
+   Responsivo Admin
+   ============================================ */
+@media (max-width: 768px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: relative;
+    height: auto;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}

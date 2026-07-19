@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo || 'Divine Essence' %></title>
+  <meta name="description" content="Divine Essence — Perfumaria premium com fragrâncias que contam histórias.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header class="header">
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <span class="nav-logo-nome">Divine Essence</span>
+      <span class="nav-logo-tagline">Fragrâncias que contam histórias</span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="nav-link <%= paginaAtual === 'home' ? 'ativo' : '' %>">Início</a></li>
+      <li><a href="/catalogo" class="nav-link <%= paginaAtual === 'catalogo' ? 'ativo' : '' %>">Catálogo</a></li>
+      <li><a href="#contato" class="nav-link">Contato</a></li>
+    </ul>
+
+    <div class="nav-busca">
+      <input
+        type="text"
+        class="nav-busca-input"
+        placeholder="Buscar fragrâncias..."
+        id="buscaHeader"
+        autocomplete="off"
+      >
+    </div>
+
+    <button class="nav-mobile-toggle" id="navToggle" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+</header>

@@ -1,0 +1,128 @@
+<%- include('partials/header') %>
+
+<!-- Filtros Fixos -->
+<div class="catalogo-filtros">
+  <div class="catalogo-filtros-inner">
+    <input
+      type="text"
+      class="filtro-busca"
+      id="buscaCatalogo"
+      placeholder="Buscar por nome ou descrição..."
+      value="<%= filtros.busca %>"
+      autocomplete="off"
+    >
+
+    <div class="filtro-grupo">
+      <label class="filtro-label" for="filtroCategoriaSelect">Categoria</label>
+      <select class="filtro-select" id="filtroCategoriaSelect">
+        <option value="todas" <%= filtros.categoria === 'todas' ? 'selected' : '' %>>Todas</option>
+        <% categorias.forEach(cat => { %>
+        <option value="<%= cat.nome %>" <%= filtros.categoria === cat.nome ? 'selected' : '' %>><%= cat.nome %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="filtro-grupo">
+      <label class="filtro-label" for="filtroOrdemSelect">Ordenar</label>
+      <select class="filtro-select" id="filtroOrdemSelect">
+        <option value="recentes" <%= filtros.ordenacao === 'recentes' ? 'selected' : '' %>>Mais Recentes</option>
+        <option value="preco_asc" <%= filtros.ordenacao === 'preco_asc' ? 'selected' : '' %>>Menor Preço</option>
+        <option value="preco_desc" <%= filtros.ordenacao === 'preco_desc' ? 'selected' : '' %>>Maior Preço</option>
+        <option value="nome_asc" <%= filtros.ordenacao === 'nome_asc' ? 'selected' : '' %>>A–Z</option>
+      </select>
+    </div>
+
+    <div class="filtro-tags">
+      <a href="/catalogo" class="filtro-tag <%= filtros.categoria === 'todas' ? 'ativo' : '' %>" data-categoria="todas">Todos</a>
+      <% categorias.slice(0, 5).forEach(cat => { %>
+      <a href="/catalogo?categoria=<%= encodeURIComponent(cat.nome) %>"
+         class="filtro-tag <%= filtros.categoria === cat.nome ? 'ativo' : '' %>"
+         data-categoria="<%= cat.nome %>">
+        <%= cat.nome %>
+      </a>
+      <% }) %>
+    </div>
+
+    <div class="catalogo-info">
+      <span><strong><%= totalResultados %></strong> produto<%= totalResultados !== 1 ? 's' : '' %></span>
+    </div>
+  </div>
+</div>
+
+<!-- Grid de Produtos -->
+<div class="secao" style="padding-top: 3rem;">
+
+  <% if (filtros.busca || filtros.categoria !== 'todas') { %>
+  <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+    <% if (filtros.busca) { %>
+    <span style="font-size: 0.875rem; color: #5C4A47;">
+      Busca: <strong>"<%= filtros.busca %>"</strong>
+      <a href="/catalogo?categoria=<%= encodeURIComponent(filtros.categoria) %>"
+         style="margin-left: 0.5rem; color: #C9A96E; font-size: 0.8rem;">✕ limpar</a>
+    </span>
+    <% } %>
+    <% if (filtros.categoria !== 'todas') { %>
+    <span style="font-size: 0.875rem; color: #5C4A47;">
+      Categoria: <strong><%= filtros.categoria %></strong>
+      <a href="/catalogo?busca=<%= encodeURIComponent(filtros.busca) %>"
+         style="margin-left: 0.5rem; color: #C9A96E; font-size: 0.8rem;">✕ limpar</a>
+    </span>
+    <% } %>
+    <a href="/catalogo" style="font-size: 0.8rem; color: #8A7E7B; margin-left: auto;">Limpar tudo</a>
+  </div>
+  <% } %>
+
+  <div class="grid-produtos">
+    <% if (produtos.length === 0) { %>
+    <div class="estado-vazio">
+      <div class="estado-vazio-icone">🌸</div>
+      <h2 class="estado-vazio-titulo">Nenhum produto encontrado</h2>
+      <p class="estado-vazio-descricao">
+        <% if (filtros.busca) { %>
+          Não encontramos produtos para "<%= filtros.busca %>". Tente outros termos.
+        <% } else if (filtros.categoria !== 'todas') { %>
+          Ainda não há produtos na categoria "<%= filtros.categoria %>".
+        <% } else { %>
+          Nosso catálogo está sendo atualizado. Volte em breve!
+        <% } %>
+      </p>
+      <a href="/catalogo" class="btn btn-outline">Ver Todos os Produtos</a>
+    </div>
+
+    <% } else { %>
+    <% produtos.forEach((produto, i) => { %>
+    <article class="card-produto animado">
+      <div class="card-produto-imagem">
+        <img
+          src="/images/produtos/<%= produto.imagem %>"
+          alt="<%= produto.nome %>"
+          onerror="this.src='/images/placeholder.svg'"
+          loading="lazy"
+        >
+        <% if (produto.destaque) { %>
+        <div class="card-produto-badge">Destaque</div>
+        <% } %>
+        <div class="card-produto-overlay">
+          <a href="/produto/<%= produto.id %>" class="btn btn-primario btn-sm">Ver Produto</a>
+        </div>
+      </div>
+      <div class="card-produto-body">
+        <div class="card-produto-categoria"><%= produto.categoria %></div>
+        <h3 class="card-produto-nome"><%= produto.nome %></h3>
+        <% if (produto.descricao) { %>
+        <p class="card-produto-descricao"><%= produto.descricao.substring(0, 90) + (produto.descricao.length > 90 ? '...' : '') %></p>
+        <% } %>
+        <div class="card-produto-footer">
+          <div class="card-produto-preco">
+            <small>R$</small> <%= Number(produto.preco).toFixed(2).replace('.', ',') %>
+          </div>
+          <a href="/produto/<%= produto.id %>" class="btn btn-outline btn-sm">Ver mais</a>
+        </div>
+      </div>
+    </article>
+    <% }) %>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

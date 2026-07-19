@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <%- include('../../partials/admin-sidebar', { paginaAtual: 'categorias', adminNome }) %>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-topbar-titulo">Categorias</h1>
+    </div>
+
+    <div class="admin-conteudo">
+
+      <% if (sucesso) { %>
+      <div class="alerta alerta-sucesso"><%= sucesso %></div>
+      <% } %>
+      <% if (erro) { %>
+      <div class="alerta alerta-erro"><%= erro %></div>
+      <% } %>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+
+        <!-- Formulário nova categoria -->
+        <div>
+          <div style="background: white; border: 1px solid #E8E0DC; padding: 1.75rem;">
+            <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 400; margin-bottom: 1.5rem;">Nova Categoria</h2>
+            <form action="/admin/categorias/nova" method="POST">
+              <div class="form-grupo">
+                <label class="form-label" for="nome">Nome <span style="color:#ef4444">*</span></label>
+                <input type="text" class="form-input" id="nome" name="nome" placeholder="Ex: Perfumes" required>
+              </div>
+              <div class="form-grupo">
+                <label class="form-label" for="descricao">Descrição</label>
+                <input type="text" class="form-input" id="descricao" name="descricao" placeholder="Breve descrição...">
+              </div>
+              <button type="submit" class="btn-admin btn-admin-dourado">Criar Categoria</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Lista de categorias -->
+        <div>
+          <div class="admin-tabela-wrapper">
+            <% if (categorias.length === 0) { %>
+            <div style="padding: 3rem; text-align: center; color: #8A7E7B;">Nenhuma categoria cadastrada.</div>
+            <% } else { %>
+            <table class="admin-tabela">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Descrição</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% categorias.forEach(cat => { %>
+                <tr>
+                  <td class="tabela-nome"><%= cat.nome %></td>
+                  <td style="font-size: 0.8125rem; color: #8A7E7B;"><%= cat.descricao || '—' %></td>
+                  <td>
+                    <div class="tabela-acoes">
+                      <!-- Editar inline via modal simples -->
+                      <button type="button" class="btn-admin btn-admin-outline btn-admin-sm"
+                              onclick="editarCategoria(<%= cat.id %>, '<%= cat.nome.replace(/'/g, "\\'") %>', '<%= (cat.descricao || '').replace(/'/g, "\\'") %>')">
+                        Editar
+                      </button>
+                      <form action="/admin/categorias/<%= cat.id %>/excluir" method="POST" style="display:inline">
+                        <button type="button" class="btn-admin btn-admin-perigo btn-admin-sm"
+                                data-confirmar="Excluir a categoria &quot;<%= cat.nome %>&quot;? Só é possível excluir categorias sem produtos.">
+                          Excluir
+                        </button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal de edição -->
+<div id="modalEditar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+  <div style="background:white; padding:2rem; width:420px; max-width:90%;">
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400; margin-bottom:1.5rem;">Editar Categoria</h3>
+    <form id="formEditar" method="POST">
+      <div class="form-grupo">
+        <label class="form-label">Nome <span style="color:#ef4444">*</span></label>
+        <input type="text" class="form-input" id="editNome" name="nome" required>
+      </div>
+      <div class="form-grupo">
+        <label class="form-label">Descrição</label>
+        <input type="text" class="form-input" id="editDescricao" name="descricao">
+      </div>
+      <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+        <button type="submit" class="btn-admin btn-admin-dourado">Salvar</button>
+        <button type="button" class="btn-admin btn-admin-outline" onclick="fecharModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>
+<script>
+function editarCategoria(id, nome, descricao) {
+  document.getElementById('formEditar').action = '/admin/categorias/' + id + '/editar';
+  document.getElementById('editNome').value = nome;
+  document.getElementById('editDescricao').value = descricao;
+  const modal = document.getElementById('modalEditar');
+  modal.style.display = 'flex';
+}
+function fecharModal() {
+  document.getElementById('modalEditar').style.display = 'none';
+}
+document.querySelectorAll('[data-confirmar]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    if (confirm(this.dataset.confirmar)) this.closest('form').submit();
+  });
+});
+</script>
+</body>
+</html>

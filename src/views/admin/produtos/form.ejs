@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= titulo %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+  <%- include('../../partials/admin-sidebar', { paginaAtual: produto ? 'produtos' : 'novo-produto', adminNome }) %>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-topbar-titulo"><%= produto ? 'Editar Produto' : 'Novo Produto' %></h1>
+      <div class="admin-topbar-acoes">
+        <a href="/admin/produtos" class="btn-admin btn-admin-outline btn-admin-sm">← Voltar</a>
+      </div>
+    </div>
+
+    <div class="admin-conteudo">
+
+      <% if (erro) { %>
+      <div class="alerta alerta-erro"><%= erro %></div>
+      <% } %>
+
+      <form
+        action="/admin/produtos/<%= produto ? produto.id + '/editar' : 'novo' %>"
+        method="POST"
+        enctype="multipart/form-data"
+        class="admin-form"
+        id="formProduto"
+      >
+
+        <div class="form-grid-2">
+          <!-- Nome -->
+          <div class="form-grupo" style="grid-column: 1 / -1;">
+            <label class="form-label" for="nome">Nome do Produto <span>*</span></label>
+            <input
+              type="text"
+              class="form-input"
+              id="nome"
+              name="nome"
+              value="<%= produto ? produto.nome : '' %>"
+              placeholder="Ex: Velvet Rose Eau de Parfum"
+              required
+            >
+          </div>
+
+          <!-- Preço -->
+          <div class="form-grupo">
+            <label class="form-label" for="preco">Preço (R$) <span>*</span></label>
+            <input
+              type="number"
+              class="form-input"
+              id="preco"
+              name="preco"
+              value="<%= produto ? Number(produto.preco).toFixed(2) : '' %>"
+              placeholder="0.00"
+              step="0.01"
+              min="0.01"
+              required
+            >
+          </div>
+
+          <!-- Categoria -->
+          <div class="form-grupo">
+            <label class="form-label" for="categoria">Categoria <span>*</span></label>
+            <select class="form-select" id="categoria" name="categoria" required>
+              <option value="">Selecione...</option>
+              <% categorias.forEach(cat => { %>
+              <option value="<%= cat.nome %>" <%= produto && produto.categoria === cat.nome ? 'selected' : '' %>>
+                <%= cat.nome %>
+              </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <!-- Descrição -->
+          <div class="form-grupo" style="grid-column: 1 / -1;">
+            <label class="form-label" for="descricao">Descrição</label>
+            <textarea
+              class="form-textarea"
+              id="descricao"
+              name="descricao"
+              placeholder="Descreva o produto: notas olfativas, ingredientes, características especiais..."
+              rows="5"
+            ><%= produto ? produto.descricao : '' %></textarea>
+          </div>
+
+          <!-- Destaque -->
+          <div class="form-grupo" style="grid-column: 1 / -1;">
+            <label class="form-checkbox-wrapper">
+              <input
+                type="checkbox"
+                class="form-checkbox"
+                id="destaque"
+                name="destaque"
+                value="on"
+                <%= produto && produto.destaque ? 'checked' : '' %>
+              >
+              <span class="form-checkbox-label">
+                <strong>Produto em Destaque</strong> — exibido na página inicial
+              </span>
+            </label>
+          </div>
+
+          <!-- Upload de Imagem -->
+          <div class="form-grupo" style="grid-column: 1 / -1;">
+            <label class="form-label">Imagem do Produto</label>
+
+            <div class="form-upload-area" id="uploadArea">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5" style="margin: 0 auto 0.75rem;">
+                <polyline points="16 16 12 12 8 16"/>
+                <line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+              <p style="font-size: 0.875rem; color: #5C4A47; margin-bottom: 0.25rem;">
+                Clique ou arraste uma imagem aqui
+              </p>
+              <p style="font-size: 0.75rem; color: #8A7E7B;">JPEG, PNG ou WebP · Máx. 5MB</p>
+              <input type="file" id="inputImagem" name="imagem" accept="image/jpeg,image/png,image/webp" style="display:none;">
+            </div>
+
+            <% if (produto && produto.imagem && !produto.imagem.startsWith('default-')) { %>
+            <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem;">
+              <img src="/images/produtos/<%= produto.imagem %>" alt="Imagem atual"
+                   style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #E8E0DC;" id="previewImagem">
+              <span style="font-size: 0.8125rem; color: #8A7E7B;">Imagem atual (envie nova para substituir)</span>
+            </div>
+            <% } else { %>
+            <img id="previewImagem" src="" alt="Preview" style="display:none;" class="form-upload-preview">
+            <% } %>
+          </div>
+        </div>
+
+        <div class="form-acoes">
+          <button type="submit" class="btn-admin btn-admin-dourado">
+            <%= produto ? 'Salvar Alterações' : 'Criar Produto' %>
+          </button>
+          <a href="/admin/produtos" class="btn-admin btn-admin-outline">Cancelar</a>
+          <% if (produto) { %>
+          <a href="/produto/<%= produto.id %>" target="_blank" class="btn-admin btn-admin-outline" style="margin-left: auto;">
+            Ver no Site ↗
+          </a>
+          <% } %>
+        </div>
+      </form>
+
+    </div>
+  </main>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
