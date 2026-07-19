@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "Catálogo online de perfumaria Divine Essence",
   "main": "src/app.js",
-  "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
-    "setup": "node database/setup.js",
-    "postinstall": "node database/setup.js"
-  },
+"scripts": {
+    "start": "node database/setup.js && node src/app.js",
+    "dev": "node database/setup.js && nodemon src/app.js",
+    "setup": "node database/setup.js"
+},
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
